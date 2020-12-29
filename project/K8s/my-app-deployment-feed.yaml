@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-feed
+  labels:
+    app: my-app-feed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app-feed
+  template:
+    metadata:
+      labels:
+        app: my-app-feed
+    spec:
+      containers:
+      - name: udagram-api-feed
+        image: ctala/udagram-api-feed
+        imagePullPolicy: "Always"
+        ports:
+          - containerPort: 8080    
+        env:
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: POSTGRES_HOST
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: POSTGRES_USERNAME
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: POSTGRES_DB
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: JWT_SECRET               
+        - name: AWS_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: AWS_BUCKET
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: AWS_REGION              
